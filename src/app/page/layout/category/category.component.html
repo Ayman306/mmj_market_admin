@@ -1,0 +1,44 @@
+<div class="contianer bg-light p-3 rounded-2">
+  <div class="head d-flex justify-content-between ">
+    <div class="left">
+      <h1>Category</h1>
+    </div>
+    <div class="right">
+      <div class="d-flex gap-2">
+        <button class="btn p-2 text-bg-dark"> <i class="bi bi-envelope-fill"></i> Add Category</button>
+        <button class="btn p-2 text-bg-dark"><i class="bi bi-layout-text-window"></i> Export List</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="card w-25">
+      <div class="card-body">
+        <div class="d-flex align-items-center ">
+          <div class="card-icon rounded-circle ">
+            <i class="bi bi-grid-3x3-gap"></i>
+          </div>
+          <div class="ms-3 content">
+            <h3 class="mb-0 fw-bold">10</h3>
+            <p class="text-primary mb-1">Total Category</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="categ mt-5 d-flex ">
+      <div class="row gap-2 justify-content-center">
+        @for (item of categoryList; track $index) {
+        <div class="categ-card p-2 rounded-2 col-auto">
+          <div class="img w-100 p-2">
+            <img [src]="item?.image" alt="" srcset="" class="w-100">
+          </div>
+          <div class="content">
+            <h2 class="title fw-bold">{{item?.title}}</h2>
+            <p class="sub-title">Total lists <span class="fw-bold">{{item.total}}</span> </p>
+            <p class="sub-title">Active lists <span class="fw-bold">{{item.active}}</span> </p>
+            <p class="sub-title">In-active lists <span class="fw-bold">{{item.inactive}}</span> </p>
+          </div>
+        </div>
+        }
+      </div>
+    </div>

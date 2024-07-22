@@ -1,0 +1,29 @@
+<div class="filter">
+  <div class="search">
+
+    <div class="row g-1 align-items-center">
+      <div class="col-auto row">
+        <div class="col-auto">
+          <mat-form-field class="example-full-width">
+            <mat-label>Search Job</mat-label>
+            <input matInput placeholder="Search Job" [(ngModel)]="search" (blur)="searchData()">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-auto row">
+        <mat-form-field>
+          <mat-label>Filter by</mat-label>
+          <mat-select>
+            @for (food of filterOption; track food) {
+            <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-auto row">
+
+      </div>
+
+    </div>
+  </div>
+</div>

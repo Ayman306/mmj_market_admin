@@ -1,0 +1,47 @@
+@import "../../../assets/style/variable.scss";
+
+.top {
+  nav {
+    padding: 10px;
+    background-color: #ebebeb;
+
+    .logo {
+      padding-left: 10px;
+      width: 150px;
+    }
+
+    .logout {
+      .btn {
+        background-color: $primary-green;
+        border-radius: 5px;
+        color: $primary-white;
+        padding: 3px 10px;
+
+        &:hover {
+          box-shadow: 0.5px 0.5px 5px $primary-red;
+        }
+      }
+    }
+  }
+}
+
+.leftNavSection {
+  background-color: #ebebeb;
+}
+
+.nav-link {
+  i {
+    font-size: 17px !important;
+  }
+
+  cursor: pointer;
+}
+
+.nav-pills {
+  gap: 20px;
+}
+
+.routeSection {
+  height: 90vh;
+  overflow: auto;
+}

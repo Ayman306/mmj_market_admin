@@ -1,0 +1,46 @@
+<!-- All services add form -->
+<div class="container">
+  <div class="head">
+    <h2 class="text-uppercase p-2 m-2">{{data?.title}}</h2>
+  </div>
+  <div class="main mb-5">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      @for (formGroup of customformGroupName; track $index) {
+      <div [formGroupName]="formGroup" class="m-2">
+        @for (field of formType[formGroup]; track $index) {
+        @if (field.type !== 'dropdown' && field.type !== 'range' && field.type !== 'date') {
+        <mat-form-field class="example-full-width m-2">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput [type]="field.type" [placeholder]="field.place_holder" [formControlName]="field.key" />
+        </mat-form-field>
+        }
+        @if (field.type == 'dropdown') {
+        <mat-form-field class="example-full-width m-2">
+          <mat-label>{{ field.label }}</mat-label>
+          <mat-select [formControlName]="field.key">
+            @for (option of field.options; track $index) {
+            <mat-option [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        }
+        @if (field.type == 'date') {
+        <mat-form-field class="example-full-width m-2">
+          <mat-label>{{ field.label }}</mat-label>
+          <input matInput [matDatepicker]="picker" [formControlName]="field.key">
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        }
+        }
+      </div>
+      }
+      <button class="btn rounded p-2 bg-dark-subtle text-light float-start m-2" (click)="cancel()">cancel</button>
+      <button class="btn rounded p-2 bg-dark text-light float-start m-2" type="submit">Add {{data?.title}}</button>
+    </form>
+
+  </div>
+</div>

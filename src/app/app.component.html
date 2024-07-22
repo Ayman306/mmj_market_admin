@@ -1,0 +1,48 @@
+@if (showNav) {
+<div class="top">
+  <nav class="d-flex justify-content-between">
+    <div class="logo">
+      <img src="../../../assets/mmj_logo.png" alt="logo" class="w-100 m-auto d-block" appLazyLoadImages>
+    </div>
+    <div class="logout">
+      <button class="btn" (click)="logout()">
+        logout <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+  </nav>
+</div>
+}
+<div class="main">
+  <div class="left">
+    <!-- <nav> -->
+    <!-- <ul class="p-0"> -->
+    <div class="container-fluid">
+      <div class="row flex-nowrap">
+        @if (showNav) {
+        <div class="col-auto col-md-3 col-xl-2  leftNavSection ">
+          <div class="d-flex flex-column align-items-center align-items-sm-start text-white min-vh-95">
+            <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start  w-100"
+              id="menu">
+              @for (item of menu; track $index) {
+              <li class="nav-item w-100 pl-sm-2  pl-3 pt-2 ml-2">
+                <a class="nav-link align-middle pl-3 pointer rounded-0" (click)="navigateUser(item.route)"
+                  [ngClass]="{'active': currentUrl==item?.route}" routerLinkActive="active">
+
+                  <i [class]="'fs-4 '+ item?.icon"></i> <span class="ms-1 d-none d-sm-inline">{{item.name}}</span>
+                </a>
+                }
+            </ul>
+          </div>
+        </div>
+        }
+        <div class="col py-3 routeSection">
+          <router-outlet />
+
+
+        </div>
+      </div>
+    </div>
+    <!-- </ul> -->
+    <!-- </nav> -->
+  </div>
+</div>

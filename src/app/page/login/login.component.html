@@ -1,0 +1,35 @@
+<div class="main">
+  <div class="container">
+    <div class="card m-auto">
+      <div class="card-body gap-4">
+        <div class="card-title m-auto">
+          <img src="../../../assets/mmj_logo.png" alt="logo" class="w-100 m-auto d-block" appLazyLoadImages>
+        </div>
+        <!-- <ng-container [ngSwitch]="currentView"> -->
+        <h2 class="card-subtitle text-center">Welcome back!</h2>
+        <form class="d-flex flex-column gap-2" [formGroup]="loginForm" (ngSubmit)="login()">
+          <label class="card-text" for="mobile">Mobile Number</label>
+          <input type="number" name="mobile" id="mobile" placeholder="Enter mobile number" class="p-2"
+            formControlName="mobile" required (wheel)="$event.preventDefault()" maxlength="10" pattern="\d{10}">
+
+          @if (m.mobile.touched && loginForm.status !== 'VALID') {
+          <div class="alert alert-danger">
+            @if (m.mobile.errors?.['required']) {
+            Please enter mobile number
+            }
+            @if (m.mobile.errors?.['pattern']) {
+            Mobile number is not 10 digit
+            }
+          </div>
+          }
+          <button type="submit" class="btn fw-bold m-auto d-block w-100" [disabled]="loginForm.status !== 'VALID'">Send
+            OTP</button>
+        </form>
+        <!-- <ng-container *ngSwitchCase="'OTP_VIEW'">
+            <app-otp (backToLogin)="backToLogin($event)"></app-otp>
+            </ng-container> -->
+        <!-- </ng-container> -->
+      </div>
+    </div>
+  </div>
+</div>

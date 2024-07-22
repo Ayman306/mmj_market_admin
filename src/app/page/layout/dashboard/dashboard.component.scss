@@ -1,0 +1,54 @@
+@import '../../../../assets/style/variable.scss';
+
+.bg-primary {
+  background-color: $primary-yellow !important;
+}
+
+.card-icon {
+  width: 25px;
+
+  i {
+    color: $primary-yellow;
+    margin: auto;
+    font-size: 25px;
+  }
+}
+
+.content {
+  .text-primary {
+    color: $primary-black;
+    font-weight: 600;
+  }
+
+  h3 {
+    color: $primary-black;
+    font-weight: 700;
+    margin-bottom: 0px;
+  }
+}
+
+.parent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.bg-set {
+  background-color: $nav-bg;
+  box-shadow: 0.5px 0.5px 5px $black-shadow;
+  border-radius: 5px;
+  // border: 0.1px solid $black-overlay-1;
+}
+
+.chart {
+  grid-template-columns: 1fr 1fr;
+}
+
+.barChart {
+  width: auto !important;
+  height: 280px !important;
+
+  @media (max-width:480px) {
+    height: auto !important;
+  }
+}

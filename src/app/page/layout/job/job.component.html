@@ -1,0 +1,19 @@
+<div class="contianer bg-light p-3 rounded-2">
+  <div class="head d-flex justify-content-between ">
+    <div class="left">
+      <h1>{{currentRoute}}</h1>
+    </div>
+    <div class="right">
+      <div class="d-flex gap-2">
+        <button class="btn p-2 text-bg-dark" (click)="addJobs()"> <i class="bi bi-envelope-fill"></i> Add Jobs</button>
+        <button class="btn p-2 text-bg-dark"><i class="bi bi-layout-text-window"></i> Export List</button>
+        <button class="btn p-2 text-bg-dark"><i class="bi bi-arrow-clockwise"></i> Refresh records</button>
+      </div>
+    </div>
+  </div>
+
+  <app-list-filter [filterOption]="foods"></app-list-filter>
+
+  <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource" [totalRecords]="total"></app-table>
+
+</div>

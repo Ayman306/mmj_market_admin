@@ -1,0 +1,132 @@
+.table {
+  margin-bottom: 0;
+  margin-top: 1rem;
+}
+
+.table thead th {
+  border-top: 0;
+  border-bottom-width: 1px;
+  font-family: "roboto", sans-serif;
+  font-weight: 500;
+  color: #212529;
+  border-bottom-color: #dee2e6;
+}
+
+.table thead th i {
+  margin-left: 0.325rem;
+}
+
+.table tbody td {
+  border-top-color: #dee2e6;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+  font-size: 0.875rem;
+  line-height: 1;
+  white-space: nowrap;
+  height: 35px;
+  padding: 12px;
+}
+
+.table td img:not(.thumb-image),
+.table th img:not(.thumb-image) {
+  border-radius: 100%;
+}
+
+.table td img.thumb-image,
+.table th img.thumb-image {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #dee2e6;
+}
+
+.table td .badge,
+.table th .badge {
+  margin-bottom: 0;
+}
+
+.table td .form-check,
+.table td .form-radio,
+.table th .form-check,
+.table th .form-radio {
+  margin-top: 0;
+  margin-bottom: -0px;
+}
+
+.table td {
+  color: #212529;
+}
+
+.table td .form-check .form-check-label input:checked+.input-helper:after {
+  line-height: 1px;
+}
+
+.table.table-borderless {
+  border: none;
+}
+
+.table.table-borderless td,
+.table.table-borderless th,
+.table.table-borderless tr {
+  border: none;
+}
+
+.table.table-bordered thead {
+  border: 1px solid #dee2e6;
+  border-bottom: none;
+}
+
+.table.table-bordered thead tr:not(.enable-border) th {
+  border-left: none;
+  border-right: none;
+}
+
+.table.table-bordered td {
+  border-color: #dee2e6;
+}
+
+.table.table-bordered.table-edge-border-0 {
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+.table.table-bordered.table-edge-border-0 thead {
+  border-left: none;
+  border-right: none;
+}
+
+.table.table-bordered.table-edge-border-0 th:first-child,
+.table.table-bordered.table-edge-border-0 td:first-child {
+  border-left: 1px solid transparent;
+}
+
+.table.table-bordered.table-edge-border-0 th:last-child,
+.table.table-bordered.table-edge-border-0 td:last-child {
+  border-right: 1px solid transparent;
+}
+
+.table.table-striped tbody tr:nth-child(odd) {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.table.table-striped tbody tr:nth-child(even) {
+  background: transparent;
+}
+
+.table.table-stretched thead tr th:first-child,
+.table.table-stretched thead tr td:first-child,
+.table.table-stretched tbody tr th:first-child,
+.table.table-stretched tbody tr td:first-child {
+  padding-left: 0;
+}
+
+.table.table-stretched thead tr th:last-child,
+.table.table-stretched thead tr td:last-child,
+.table.table-stretched tbody tr th:last-child,
+.table.table-stretched tbody tr td:last-child {
+  padding-right: 0;
+  text-align: right;
+}

@@ -1,0 +1,32 @@
+@import '../../../assets/style/variable.scss';
+
+.main {
+  .container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    .card {
+      width: clamp(350px, 10vw, 500px);
+
+      .card-body {
+        // width: clamp(250px,10vw,500px);
+
+        .card-title {
+          text-align: center;
+          width: 200px;
+
+        }
+
+        button {
+          padding: 12.5px 0px;
+          background-color: $primary-green;
+          border-radius: 10px;
+          color: $primary-white;
+        }
+      }
+    }
+  }
+}
