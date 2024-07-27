@@ -1,59 +1,48 @@
-<div class="top">
-  <nav class="d-flex justify-content-between">
-    <div class="logo">
-      <img src="../../../assets/mmj_logo.png" alt="logo" class="w-100 m-auto d-block" appLazyLoadImages>
-    </div>
-    <div class="logout">
-      <button class="btn">
-        logout <i class="bi bi-box-arrow-right"></i>
-      </button>
-    </div>
-  </nav>
-</div>
-<div class="main">
-  <div class="left">
-    <nav>
-      <ul class="p-0">
-        <div class="container-fluid">
-          <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 leftNavSection">
-              <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-90">
-                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start p-0"
-                  id="menu">
-                  @for (item of menu; track $index) {
-                  <li class="nav-item">
-                    <a class="nav-link align-middle px-0 pointer" (click)="navigateUser(item.name)">
-                      <i [class]="'fs-4 '+ item?.icon"></i> <span class="ms-1 d-none d-sm-inline">{{item.name}}</span>
-                    </a>
-                    }
-                </ul>
-              </div>
-            </div>
-            <div class="col py-3 routeSection">
-              <router-outlet />
+@if (showNav) {
+  <div class="top">
+    <nav class="d-flex justify-content-between">
+      <div class="logo">
+        <img src="../../../assets/mmj_logo.png" alt="logo" class="w-100 m-auto d-block" >
+      </div>
+      <div class="logout">
+        <button class="btn" (click)="logout()">
+          logout <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+    </nav>
+  </div>
+  }
+  <div class="main">
+    <div class="left">
+      <!-- <nav> -->
+      <!-- <ul class="p-0"> -->
+      <div class="">
+        <div class="row flex-nowrap">
+          <!-- @if (showNav) { -->
+          <div class="col-auto col-md-3 col-xl-2  leftNavSection ">
+            <div class="d-flex flex-column align-items-center align-items-sm-start text-white min-vh-95">
+              <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start  w-100"
+                id="menu">
+                @for (item of menu; track $index) {
+                <li class="nav-item w-100 pl-sm-2  pl-3 pt-2 ml-2">
+                  <a class="nav-link align-middle pl-3 pointer rounded-0" (click)="navigateUser(item.route)"
+                    [ngClass]="{'active': currentUrl==item?.route}" routerLinkActive="active">
 
-              <h3>Left Sidebar with Submenus</h3>
-              <p class="lead">
-                An example 2-level sidebar with collasible menu items. The menu functions like an "accordion" where only
-                a single
-                menu is be open at a time. While the sidebar itself is not toggle-able, it does responsively shrink in
-                width on smaller screens.
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore libero impedit aliquid unde repudiandae
-                assumenda iusto, vel facilis, debitis odio nobis possimus quae, repellat aspernatur beatae odit quaerat
-                cupiditate error.
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolore libero impedit aliquid unde repudiandae
-                assumenda iusto, vel facilis, debitis odio nobis possimus quae, repellat aspernatur beatae odit quaerat
-                cupiditate error.
-              </p>
-              <ul class="list-unstyled">
-                <li>
-                  <h5>Responsive</h5> shrinks in width, hides text labels and collapses to icons only on mobile
-                </li>
+                    <i [class]="'fs-4 '+ item?.icon"></i> <span class="ms-1 d-none d-sm-inline">{{item.name}}</span>
+                  </a>
+                  }
               </ul>
             </div>
           </div>
+          <!-- } -->
+          <div class="col  routeSection">
+            <router-outlet />
+
+
+          </div>
         </div>
-      </ul>
-    </nav>
+      </div>
+      <!-- </ul> -->
+      <!-- </nav> -->
+    </div>
   </div>
-</div>

@@ -6,7 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MyErrorStateMatcher } from './service/error-state-mtatcher';
+import { MyErrorStateMatcher } from './utils/error-state-mtatcher';
 
 export const appConfig: ApplicationConfig = {
   providers: [

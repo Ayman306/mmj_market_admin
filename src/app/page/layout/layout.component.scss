@@ -3,11 +3,11 @@
 .top {
   nav {
     padding: 10px;
-    background-color: #ebebeb;
+    background-color: $nav-bg;
 
     .logo {
       padding-left: 10px;
-      width: 150px;
+      width: 120px;
     }
 
     .logout {
@@ -26,7 +26,9 @@
 }
 
 .leftNavSection {
-  background-color: #ebebeb;
+  background-color: $nav-bg;
+  padding: 0;
+  padding-top: 30px;
 }
 
 .nav-link {
@@ -44,4 +46,9 @@
 .routeSection {
   height: 90vh;
   overflow: auto;
+}
+
+.active {
+  background-color: $dark-primary-green !important;
+  color: $nav-bg !important;
 }

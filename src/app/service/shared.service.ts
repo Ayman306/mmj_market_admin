@@ -9,7 +9,7 @@ export class SharedService {
   logout() {
     localStorage.clear();
     sessionStorage.clear();
-    this.router.navigateByUrl('/dashboard');
+    this.router.navigateByUrl('/login');
   }
   jobPostFields = {
     job_detail: [
@@ -114,4 +114,10 @@ export class SharedService {
 
   businessFields = {};
   categoryFields = {};
+  setLoginValues(data: any) {
+    localStorage.setItem('login', JSON.stringify(data));
+  }
+  isLoggedIn() {
+    return localStorage.getItem('login');
+  }
 }

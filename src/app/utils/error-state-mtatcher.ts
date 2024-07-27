@@ -6,7 +6,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     control: FormControl | null,
     form: FormGroupDirective | NgForm | null
   ): boolean {
-    console.log('check echek', control, form);
+    // console.log('check echek', control, form);
 
     const isSubmitted = form && form.submitted;
     return !!(

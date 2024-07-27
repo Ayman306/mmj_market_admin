@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { MyErrorStateMatcher } from '../../service/error-state-mtatcher';
+import { MyErrorStateMatcher } from '../../utils/error-state-mtatcher';
+import { SharedService } from '../../service/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,11 @@ export class LoginComponent {
   loginForm: FormGroup;
   matcher = new MyErrorStateMatcher();
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private sharedService: SharedService
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -38,8 +43,9 @@ export class LoginComponent {
 
   login() {
     if (this.loginForm.valid) {
+      this.sharedService.setLoginValues(this.loginForm.value);
       // Perform login logic here
-      this.router.navigateByUrl('/dashboard');
+      this.router.navigateByUrl('/admin');
     }
   }
 }

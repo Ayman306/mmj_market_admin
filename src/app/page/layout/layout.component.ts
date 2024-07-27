@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { SharedService } from '../../service/shared.service';
+import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -9,59 +11,67 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit, OnDestroy {
+  title = 'mmj_market_admin';
+  showNav = true;
+  currentUrl = 'dashboard';
+  private routerSubscription: Subscription | undefined;
+
+  constructor(private router: Router, private shared: SharedService) {}
+
+  ngOnInit() {
+    this.routerSubscription = this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd
+        )
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.currentUrl = event.urlAfterRedirects.replace(/^\/admin\//, '');
+        console.log(this.currentUrl, 'currentUrl');
+        if (this.currentUrl === '' || this.currentUrl === 'admin') {
+          this.router.navigateByUrl('/admin/dashboard');
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
   menu = [
     {
       name: 'Dashboard',
-      route: 'main',
+      route: 'dashboard',
       icon: 'bi-boxes',
     },
     {
       name: 'job',
       route: 'job',
       icon: 'bi-person-bounding-box',
-      subRoute: [
-        {
-          name: 'Add job',
-          route: 'add-job',
-        },
-      ],
     },
     {
       name: 'Business',
       route: 'business',
       icon: 'bi-shop',
-      subRoute: [
-        {
-          name: 'Add Business',
-          route: 'add-business',
-        },
-      ],
     },
     {
       name: 'Restaurent',
       route: 'restaurent',
       icon: 'bi-cup-hot-fill',
-      subRoute: [
-        {
-          name: 'Add restaurent',
-          route: 'add-restaurent',
-        },
-      ],
     },
     {
       name: 'Category',
       route: 'category',
       icon: 'bi-database-fill',
-      subRoute: [
-        {
-          name: 'Add Category',
-          route: 'add-category',
-        },
-      ],
     },
   ];
-  navigateUser(name: string) {
-    console.log(name);
+  navigateUser(route: string) {
+    this.router.navigateByUrl('/admin/' + route);
+  }
+  logout() {
+    this.shared.logout();
   }
 }

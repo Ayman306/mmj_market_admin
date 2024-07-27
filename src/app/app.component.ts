@@ -23,17 +23,17 @@ export class AppComponent implements OnInit {
   currentUrl = '';
   constructor(private router: Router, private shared: SharedService) {}
   ngOnInit() {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event: any) => {
-        console.log(event.url);
-        if (event.url == '/login' || event.url == '/') {
-          this.showNav = false;
-        } else {
-          this.showNav = true;
-        }
-        this.currentUrl = event.url.replace(/^\/+/, '');
-      });
+    // this.router.events
+    //   .pipe(filter((event) => event instanceof NavigationEnd))
+    //   .subscribe((event: any) => {
+    //     console.log(event.url);
+    //     if (event.url == '/login' || event.url == '/') {
+    //       this.showNav = false;
+    //     } else {
+    //       this.showNav = true;
+    //     }
+    //     this.currentUrl = event.url.replace(/^\/+/, '');
+    //   });
   }
   menu = [
     {
