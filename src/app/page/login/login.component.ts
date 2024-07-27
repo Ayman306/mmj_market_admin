@@ -1,24 +1,45 @@
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MyErrorStateMatcher } from '../../service/error-state-mtatcher';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  constructor(private fb: FormBuilder, private router: Router) {}
+  hide = true;
+  loginForm: FormGroup;
+  matcher = new MyErrorStateMatcher();
 
-  loginForm = this.fb.group({
-    mobile: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-  });
-  login() {
-    this.router.navigateByUrl('/dashboard');
+  constructor(private fb: FormBuilder, private router: Router) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
   }
-  get m() {
-    return this.loginForm.controls;
+
+  login() {
+    if (this.loginForm.valid) {
+      // Perform login logic here
+      this.router.navigateByUrl('/dashboard');
+    }
   }
 }
