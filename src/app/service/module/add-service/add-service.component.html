@@ -1,8 +1,10 @@
 <!-- All services add form -->
-<div class="container">
+<!-- <div class="container"> -->
+
   <div class="head">
-    <h2 class="text-uppercase p-2 m-2">{{data?.title}}</h2>
+    <h2 mat-dialog-title class="text-uppercase p-2 m-2">{{data?.title}}</h2>
   </div>
+  <mat-dialog-content>
   <div class="main mb-5">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       @for (formGroup of customformGroupName; track $index) {
@@ -38,9 +40,12 @@
         }
       </div>
       }
+      <mat-dialog-actions align="end">
       <button class="btn rounded p-2 bg-dark-subtle text-light float-start m-2" (click)="cancel()">cancel</button>
       <button class="btn rounded p-2 bg-dark text-light float-start m-2" type="submit">Add {{data?.title}}</button>
+    </mat-dialog-actions>
     </form>
 
   </div>
-</div>
+</mat-dialog-content>
+<!-- </div> -->

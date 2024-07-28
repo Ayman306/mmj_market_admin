@@ -84,6 +84,21 @@ export class LoginComponent {
   }
   resetValue() {
     this.resetPassword = !this.resetPassword;
-    this.loginForm.reset();
+
+    // Reset form values without triggering validation
+    this.loginForm.patchValue({
+      email: '',
+      password: '',
+    });
+
+    // Mark form controls as untouched and pristine
+    // Object.keys(this.loginForm.controls).forEach((key) => {
+    //   const control = this.loginForm.get(key);
+    //   control?.markAsUntouched();
+    //   control?.markAsPristine();
+    // });
+
+    // Update form status
+    // this.loginForm.updateValueAndValidity();
   }
 }

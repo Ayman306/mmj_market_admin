@@ -1,0 +1,22 @@
+@import '../../../../assets/style/variable.scss';
+
+.main {
+  margin: 10px;
+
+  .content {
+    background-color: $nav-bg;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+
+    .addBtn {
+      border: 1px solid $primary-green;
+      color: $primary-green;
+
+      &:hover {
+        background-color: $primary-green;
+        color: $primary-white;
+      }
+    }
+  }
+}

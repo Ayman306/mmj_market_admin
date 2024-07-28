@@ -1,17 +1,16 @@
-<div class="contianer bg-light p-3 rounded-2">
-  <div class="head d-flex justify-content-between ">
+<div class="main">
+  <div class="content">
+    <div class=" d-flex justify-content-between">
     <div class="left">
-      <h1>Category</h1>
+      <h1>Job</h1>
     </div>
     <div class="right">
       <div class="d-flex gap-2">
-        <button class="btn p-2 text-bg-dark"> <i class="bi bi-envelope-fill"></i> Add Category</button>
-        <button class="btn p-2 text-bg-dark"><i class="bi bi-layout-text-window"></i> Export List</button>
+        <button class="btn p-2 addBtn"> <i class="bi bi-envelope-fill"></i> Add Category</button>
+        <button class="btn p-2 addBtn"><i class="bi bi-arrow-clockwise"></i> Refresh records</button>
+      </div>
       </div>
     </div>
-  </div>
-
-  <div class="main">
     <div class="card w-25">
       <div class="card-body">
         <div class="d-flex align-items-center ">
@@ -25,6 +24,10 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="content h-75">
+
     <div class="categ mt-5 d-flex ">
       <div class="row gap-2 justify-content-center">
         @for (item of categoryList; track $index) {

@@ -1,5 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { SharedService } from '../../shared.service';
 import {
   FormBuilder,
@@ -13,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-service',
@@ -24,6 +29,8 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     ReactiveFormsModule,
     MatSelectModule,
     MatDatepickerModule,
+    MatDialogModule,
+    JsonPipe,
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './add-service.component.html',
@@ -45,7 +52,45 @@ export class AddServiceComponent implements OnInit {
     console.log(this.data, 'data');
     if (this.data?.title) {
       this.formTypeInit(this.data.title);
+      if (this.data.apiResponse) {
+        this.patchFormValues(this.data.apiResponse);
+      }
     }
+  }
+
+  patchFormValues(apiResponse: any) {
+    if (!this.form) return;
+
+    this.customformGroupName.forEach((groupName) => {
+      const groupData = apiResponse[groupName];
+      if (groupData) {
+        const formGroup = this.form.get(groupName) as FormGroup;
+        if (formGroup) {
+          Object.keys(groupData).forEach((key) => {
+            if (formGroup.get(key)) {
+              if (key.includes('id')) {
+                // Set true for any key that includes 'id'
+                formGroup.get(key)?.patchValue(true);
+              } else if (
+                key === 'media' &&
+                typeof groupData[key] === 'string'
+              ) {
+                try {
+                  const mediaObj = JSON.parse(groupData[key]);
+                  if (Array.isArray(mediaObj) && mediaObj.length > 0) {
+                    formGroup.get(key)?.patchValue(groupData[key]);
+                  }
+                } catch (e) {
+                  console.error('Error parsing media JSON:', e);
+                }
+              } else {
+                formGroup.get(key)?.patchValue(groupData[key]);
+              }
+            }
+          });
+        }
+      }
+    });
   }
 
   formTypeInit(type: string) {
@@ -68,8 +113,18 @@ export class AddServiceComponent implements OnInit {
       case 'category':
         this.formType = this.sharedService.categoryFields;
         break;
+      case 'user':
+        this.formType = this.sharedService.user;
+        this.form = this.fb.group({
+          user_field: this.fb.group(
+            this.createFields(this.formType.user_field)
+          ),
+        });
+        this.customformGroupName = ['user_field'];
+        break;
       default:
         this.formType = [];
+        break;
     }
   }
 
@@ -91,8 +146,6 @@ export class AddServiceComponent implements OnInit {
     this.dialogRef.close();
   }
   sendValues() {
-    this.dialogRef.close({
-      size: this.data.title,
-    });
+    this.dialogRef.close(this.form.value);
   }
 }

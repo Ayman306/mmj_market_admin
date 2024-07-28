@@ -1,3 +1,17 @@
 <div class="main">
+  <div class="content">
+    <div class=" d-flex justify-content-between">
+    <div class="left">
+      <h1>Admin</h1>
+    </div>
+    <div class="right">
+      <div class="d-flex gap-2">
+        <button class="btn p-2 addBtn" (click)="openJobDialog()"> <i class="bi bi-envelope-fill"></i> Create user</button>
+      </div>
+    </div>
+   </div>
+   <app-list-filter [filterOption]="foods"></app-list-filter>
+  </div>
 
+  <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource" (editRecordData)="editRecord($event)" (statusUpdate)="editStatus($event)"></app-table>
 </div>

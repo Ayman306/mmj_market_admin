@@ -13,7 +13,13 @@ export class SharedService {
   }
   jobPostFields = {
     job_detail: [
-      { label: 'Title', type: 'text', place_holder: 'Job title', key: 'title' },
+      {
+        label: 'Title',
+        type: 'text',
+        place_holder: 'Job title',
+        key: 'title',
+        required: true,
+      },
       {
         label: 'Company name',
         type: 'text',
@@ -114,6 +120,38 @@ export class SharedService {
 
   businessFields = {};
   categoryFields = {};
+  user = {
+    user_field: [
+      {
+        label: 'Username',
+        type: 'text',
+        place_holder: 'Username',
+        key: 'username',
+      },
+      {
+        label: 'Name',
+        type: 'text',
+        place_holder: 'Name',
+        key: 'name',
+      },
+      {
+        label: 'role',
+        type: 'dropdown',
+        place_holder: 'Role',
+        key: 'role',
+        options: [
+          { label: 'User', value: 'user' },
+          { label: 'Admin', value: 'admin' },
+        ],
+      },
+      {
+        label: 'Email',
+        type: 'email',
+        place_holder: 'Email',
+        key: 'email',
+      },
+    ],
+  };
   setLoginValues(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(JSON.parse(data)));
   }

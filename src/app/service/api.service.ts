@@ -17,10 +17,26 @@ export class ApiService {
     return this.http.post<any>(`${this.apiUrl}/user/login`, data);
   }
 
+  addUser(data: any) {
+    return this.http.post<any>(`${this.apiUrl}/user/add`, data);
+  }
+  editUser(data: any) {
+    return this.http.post<any>(`${this.apiUrl}/user/update`, data);
+  }
+  getUser(data?: any) {
+    return this.http.post<any>(`${this.apiUrl}/user`, data);
+  }
+
   resetPassword(data: any) {
     return this.http.post<any>(`${this.apiUrl}/user/reset-password`, data);
   }
   getAllJobList(data: any) {
     return this.http.post<any>(`${this.apiUrl}/job`, data);
+  }
+  addJob(data: any) {
+    return this.http.post<any>(`${this.apiUrl}/job/add`, data);
+  }
+  editJob(data: any) {
+    return this.http.post<any>(`${this.apiUrl}/job/update`, data);
   }
 }

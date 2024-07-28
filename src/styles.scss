@@ -61,3 +61,12 @@ body {
 .row {
   --bs-gutter-x: 0;
 }
+
+.addservice-dialog-class {
+  // height: 780px;
+
+  .mat-dialog-container {
+    padding: 0;
+    // Add any other custom styles for your dialog
+  }
+}

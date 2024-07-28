@@ -27,8 +27,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe((event: NavigationEnd) => {
-        this.currentUrl = event.urlAfterRedirects.replace(/^\/admin\//, '');
+        // Extract the current route without the '/admin/' prefix
+        this.currentUrl = event.urlAfterRedirects.split('/').pop() || '';
         console.log(this.currentUrl, 'currentUrl');
+
+        // Redirect to dashboard if the URL is empty or just '/admin'
         if (this.currentUrl === '' || this.currentUrl === 'admin') {
           this.router.navigateByUrl('/admin/dashboard');
         }
@@ -46,31 +49,37 @@ export class LayoutComponent implements OnInit, OnDestroy {
       name: 'Dashboard',
       route: 'dashboard',
       icon: 'bi-boxes',
+      status: true,
     },
     {
       name: 'job',
       route: 'job',
       icon: 'bi-person-bounding-box',
+      status: true,
     },
     {
       name: 'Business',
       route: 'business',
       icon: 'bi-shop',
+      status: false,
     },
     {
       name: 'Restaurent',
       route: 'restaurent',
       icon: 'bi-cup-hot-fill',
+      status: false,
     },
     {
       name: 'Category',
       route: 'category',
       icon: 'bi-database-fill',
+      status: true,
     },
     {
       name: 'Admin access',
       route: 'admin-access',
       icon: 'bi-database-fill',
+      status: true,
     },
   ];
   navigateUser(route: string) {
