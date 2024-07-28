@@ -46,6 +46,7 @@ export class LoginComponent {
 
   login() {
     if (this.loginForm.valid) {
+      this.loginForm.value['platform'] = 'admin';
       if (this.resetPassword) {
         this.apiService.resetPassword(this.loginForm.value).subscribe(
           (res) => {
