@@ -1,5 +1,11 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-table',
@@ -13,6 +19,10 @@ export class TableComponent {
   @Input() dataSource: any | undefined;
   @Input() total: number | undefined;
   @Input() pageSize: number | undefined;
-  pagesize = 0;
+  @Output() pageChange = new EventEmitter<PageEvent>();
+
   objectKeys = Object.keys;
+  onPageChange(event: PageEvent) {
+    this.pageChange.emit(event);
+  }
 }

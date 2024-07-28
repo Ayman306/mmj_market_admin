@@ -3,7 +3,7 @@
 
 
     <mat-paginator [length]="total"
-    [pageSize]="pageSize" aria-label="Select page">
+    [pageSize]="pageSize" aria-label="Select page"  (page)="onPageChange($event)">
     </mat-paginator>
     <table class="table table-hover">
       <thead>

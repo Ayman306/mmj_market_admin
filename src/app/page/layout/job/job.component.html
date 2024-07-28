@@ -15,6 +15,6 @@
   <app-list-filter [filterOption]="foods"></app-list-filter>
 
   <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource" [total]="totalJobs"
-  [pageSize]="pageSize"></app-table>
+  [pageSize]="pageSize"  (pageChange)="onPageChange($event)"></app-table>
 
 </div>
