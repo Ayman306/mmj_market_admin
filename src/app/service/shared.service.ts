@@ -114,10 +114,10 @@ export class SharedService {
 
   businessFields = {};
   categoryFields = {};
-  setLoginValues(data: any) {
-    localStorage.setItem('login', JSON.stringify(data));
+  setLoginValues(key: string, data: any) {
+    localStorage.setItem(key, JSON.stringify(JSON.parse(data)));
   }
   isLoggedIn() {
-    return localStorage.getItem('login');
+    return localStorage.getItem('token');
   }
 }

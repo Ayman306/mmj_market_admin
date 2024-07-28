@@ -67,6 +67,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
       route: 'category',
       icon: 'bi-database-fill',
     },
+    {
+      name: 'Admin access',
+      route: 'admin-access',
+      icon: 'bi-database-fill',
+    },
   ];
   navigateUser(route: string) {
     this.router.navigateByUrl('/admin/' + route);

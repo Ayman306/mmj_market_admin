@@ -24,6 +24,13 @@ export const adminRoutes: Routes = [
       import('./business/business.component').then((c) => c.BusinessComponent),
   },
   {
+    path: 'admin-access',
+    loadComponent: () =>
+      import('./admin-access/admin-access.component').then(
+        (c) => c.AdminAccessComponent
+      ),
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',

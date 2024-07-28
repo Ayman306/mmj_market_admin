@@ -1,10 +1,19 @@
 <div class="main">
-  <div class="left">
     <div class="logo">
       <img src="../../../assets/mmj_logo.png" alt="logo" class="w-100" appLazyLoadImages>
     </div>
     <div class="form_section">
-    <form class="d-flex flex-column gap-2 w-50 m-auto"  [formGroup]="loginForm"  (ngSubmit)="login()">
+      <div class="content">
+        @if (!resetPassword) {
+  <h1 class="text-center">Welcome back</h1>
+          <p class="text-center">Enter your credentials to access your account</p>
+        }@else {
+          <h1 class="text-center">Reset password</h1>
+          <p class="text-center">Enter email credential</p>
+        }
+
+      </div>
+    <form class="d-flex flex-column gap-2 w-25 m-auto"  [formGroup]="loginForm"  (ngSubmit)="login()">
       <mat-form-field class="example-full-width">
         <mat-label>Email</mat-label>
         <input type="email" matInput placeholder="Ex. pat@example.com" formControlName="email" required [errorStateMatcher]="matcher">
@@ -22,8 +31,8 @@
         }
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <mat-label>Password</mat-label>
-        <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" formControlName="password" required [errorStateMatcher]="matcher">
+        <mat-label>{{!resetPassword ?  'Password' : 'Enter new password'}}</mat-label>
+        <input matInput [placeholder]="!resetPassword ?  'Password' : 'Enter new password'" [type]="hide ? 'password' : 'text'" formControlName="password" required [errorStateMatcher]="matcher">
         <mat-icon class="eyeIcon" matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         @if (loginForm.get('password')?.hasError('required')) {
           <mat-error>
@@ -36,13 +45,11 @@
           </mat-error>
         }
       </mat-form-field>
-  <button type="submit" class="btn  m-auto w-100 loginBtn" [disabled]="loginForm.status !== 'VALID'">Login Now</button>
+
+      <p class="reset" (click)="resetValue()">{{resetPassword ? 'Back to login':'Reset password'}}</p>
+
+  <button type="submit" class="btn  m-auto w-100 loginBtn" [disabled]="loginForm.status !== 'VALID'">{{!resetPassword ? 'Login Now' : 'Reset Password'}}</button>
 </form>
 </div>
 
   </div>
-  <div class="right">
-    <h1>Welcome admin</h1>
-
-  </div>
-</div>

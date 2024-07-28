@@ -7,13 +7,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MyErrorStateMatcher } from './utils/error-state-mtatcher';
+import { HttpClientModule } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideCharts(withDefaultRegisterables()),
     provideAnimationsAsync(),
-    importProvidersFrom([BrowserModule, BrowserAnimationsModule]),
+    importProvidersFrom([
+      BrowserModule,
+      BrowserAnimationsModule,
+      HttpClientModule,
+    ]),
     { provide: ErrorStateMatcher, useClass: MyErrorStateMatcher },
   ],
 };

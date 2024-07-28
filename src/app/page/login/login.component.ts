@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MyErrorStateMatcher } from '../../utils/error-state-mtatcher';
 import { SharedService } from '../../service/shared.service';
+import { ApiService } from '../../service/api.service';
 
 @Component({
   selector: 'app-login',
@@ -29,11 +30,13 @@ export class LoginComponent {
   hide = true;
   loginForm: FormGroup;
   matcher = new MyErrorStateMatcher();
+  resetPassword = false;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private apiService: ApiService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -43,9 +46,43 @@ export class LoginComponent {
 
   login() {
     if (this.loginForm.valid) {
-      this.sharedService.setLoginValues(this.loginForm.value);
+      if (this.resetPassword) {
+        this.apiService.resetPassword(this.loginForm.value).subscribe(
+          (res) => {
+            console.log(res);
+            this.resetValue();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      } else {
+        this.apiService.loginUser(this.loginForm.value).subscribe(
+          (res) => {
+            console.log(res);
+            if (res?.user?.role == 'admin') {
+              this.sharedService.setLoginValues(
+                'token',
+                JSON.stringify(res?.token)
+              );
+              this.sharedService.setLoginValues(
+                'user',
+                JSON.stringify(res?.user)
+              );
+              this.router.navigateByUrl('/admin');
+            }
+          },
+          (err) => {
+            console.log(err.message);
+          }
+        );
+      }
+      // this.sharedService.setLoginValues(this.loginForm.value);
       // Perform login logic here
-      this.router.navigateByUrl('/admin');
     }
+  }
+  resetValue() {
+    this.resetPassword = !this.resetPassword;
+    this.loginForm.reset();
   }
 }
