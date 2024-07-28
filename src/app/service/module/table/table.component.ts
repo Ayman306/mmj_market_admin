@@ -11,7 +11,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 export class TableComponent {
   @Input() displayedColumns: string[] | undefined;
   @Input() dataSource: any | undefined;
-  @Input() totalRecords: number | undefined;
+  @Input() total: number | undefined;
+  @Input() pageSize: number | undefined;
   pagesize = 0;
   objectKeys = Object.keys;
 }
