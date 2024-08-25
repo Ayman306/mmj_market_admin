@@ -61,7 +61,7 @@ export class JobComponent implements OnInit {
         id: job?.jobpost.job_detail.id,
         title: job?.jobpost.job_detail.title,
         company: job?.jobpost.job_detail.company_name,
-        phone: job?.jobpost.contact_details.primary_contact,
+        phone: job?.jobpost.contact_detail.primary_contact,
         expiry_date: this.formatDate(job?.jobpost.job_detail.created_date),
         status: job?.jobpost.job_detail.status,
       }));
@@ -94,15 +94,15 @@ export class JobComponent implements OnInit {
           // Handle the result from the dialog
           console.log('Edited job:', result);
           // Optionally, refresh the job list
-          if (result?.contact_details?.primary_contact) {
-            result.contact_details.contact_available = true;
+          if (result?.contact_detail?.primary_contact) {
+            result.contact_detail.contact_available = true;
           } else {
-            result.contact_details.contact_available = false;
+            result.contact_detail.contact_available = false;
           }
           result.job_detail['id'] = apiResponseData[0].jobpost.job_detail.id;
-          result.contact_details['id'] =
-            apiResponseData[0].jobpost.contact_details.id;
-          this.editJob(result);
+          result.contact_detail['id'] =
+            apiResponseData[0].jobpost.contact_detail.id;
+          // this.editJob(result);
         }
       });
     });
@@ -134,8 +134,8 @@ export class JobComponent implements OnInit {
         // Handle the result from the dialog
         console.log('New job added:', result);
         // Optionally, refresh the job list
-        if (result?.contact_details?.primary_contact) {
-          result.contact_details.contact_available = true;
+        if (result?.contact_detail?.primary_contact) {
+          result.contact_detail.contact_available = true;
         }
         this.addJob(result);
       }

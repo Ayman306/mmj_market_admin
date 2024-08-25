@@ -47,9 +47,9 @@ export class BusinessComponent implements OnInit {
       this.dataSource = res?.result?.map((job: any) => ({
         title: job?.jobpost.job_detail.title,
         company: job?.jobpost.job_detail.company_name,
-        phone: job?.jobpost.contact_details.primary_contact,
+        phone: job?.jobpost.contact_detail.primary_contact,
         expiry_date: this.formatDate(job?.jobpost.job_detail.created_date),
-        status: job?.jobpost.contact_details.contact_available,
+        status: job?.jobpost.contact_detail.contact_available,
       }));
       this.totalJobs = res.total;
     });

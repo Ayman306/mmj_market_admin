@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class SharedService {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
   logout() {
     localStorage.clear();
     sessionStorage.clear();
@@ -81,12 +81,18 @@ export class SharedService {
         key: 'expiry_date',
       },
     ],
-    contact_details: [
+    contact_detail: [
       {
         label: 'Primary contact',
         type: 'number',
         place_holder: 'Primary contact',
         key: 'primary_contact',
+      },
+      {
+        label: 'Whatsapp contact',
+        type: 'number',
+        place_holder: 'Whatsapp contact',
+        key: 'wa_number',
       },
       {
         label: 'Alternative contact',

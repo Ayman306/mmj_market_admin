@@ -101,11 +101,11 @@ export class AddServiceComponent implements OnInit {
           job_detail: this.fb.group(
             this.createFields(this.formType.job_detail)
           ),
-          contact_details: this.fb.group(
-            this.createFields(this.formType.contact_details)
+          contact_detail: this.fb.group(
+            this.createFields(this.formType.contact_detail)
           ),
         });
-        this.customformGroupName = ['job_detail', 'contact_details'];
+        this.customformGroupName = ['job_detail', 'contact_detail'];
         break;
       case 'business':
         this.formType = this.sharedService.businessFields;

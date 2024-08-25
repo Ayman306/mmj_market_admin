@@ -65,10 +65,10 @@ export class AdminAccessComponent implements OnInit {
         // Handle the result from the dialog
         console.log('Edited job:', result);
         // Optionally, refresh the job list
-        // if (result?.contact_details?.primary_contact) {
-        //   result.contact_details.contact_available = true;
+        // if (result?.contact_detail?.primary_contact) {
+        //   result.contact_detail.contact_available = true;
         // } else {
-        //   result.contact_details.contact_available = false;
+        //   result.contact_detail.contact_available = false;
         // }
         result.user_field.id = data.id;
         this.editUser(result.user_field);
