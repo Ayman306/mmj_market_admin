@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MyErrorStateMatcher } from './utils/error-state-mtatcher';
 import { HttpClientModule } from '@angular/common/http';
+import { NgToastModule } from 'ng-angular-popup';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,7 +19,9 @@ export const appConfig: ApplicationConfig = {
       BrowserModule,
       BrowserAnimationsModule,
       HttpClientModule,
+      NgToastModule
     ]),
     { provide: ErrorStateMatcher, useClass: MyErrorStateMatcher },
   ],
 };
+

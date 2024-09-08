@@ -4,6 +4,7 @@ import { AddServiceComponent } from '../../../service/module/add-service/add-ser
 import { ApiService } from '../../../service/api.service';
 import { ListFilterComponent } from '../../../service/module/list-filter/list-filter.component';
 import { TableComponent } from '../../../service/module/table/table.component';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-admin-access',
@@ -13,7 +14,7 @@ import { TableComponent } from '../../../service/module/table/table.component';
   styleUrl: './admin-access.component.scss',
 })
 export class AdminAccessComponent implements OnInit {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private toaster: NgToastService) { }
   ngOnInit(): void {
     this.loadUser();
   }
@@ -30,9 +31,15 @@ export class AdminAccessComponent implements OnInit {
   ];
 
   loadUser() {
-    this.apiService.getUser().subscribe((res) => {
+    this.apiService.getUser().subscribe({
+      next: (res) => {
       this.dataSource = res;
+        this.toaster.success('Admin users')
       console.log(res);
+      },
+      error: (err) => {
+        this.toaster.danger('Server error: ' + err)
+      }
     });
   }
 
@@ -46,7 +53,7 @@ export class AdminAccessComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         console.log('New user added:', result);
-        this.createUser(result?.user_field);
+        this.createUser(result);
       }
     });
   }
@@ -57,7 +64,7 @@ export class AdminAccessComponent implements OnInit {
     const dialogRef = this.dialog.open(AddServiceComponent, {
       data: {
         title: 'user',
-        apiResponse: { user_field: data }, // The object you received from the API
+        apiResponse: data, // The object you received from the API
       },
     });
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -77,15 +84,17 @@ export class AdminAccessComponent implements OnInit {
   }
 
   editUser(data: any) {
-    this.apiService.editUser(data).subscribe(
-      (res) => {
+    this.apiService.editUser(data).subscribe({
+      next: (res) => {
         console.log('user update', res);
+        this.toaster.success('User updated')
         this.loadUser();
       },
-      (err) => {
+      error: (err) => {
+        this.toaster.danger('Error updating user')
         console.log(err);
       }
-    );
+    });
   }
 
   editStatus(item: any) {
@@ -95,14 +104,16 @@ export class AdminAccessComponent implements OnInit {
     }
   }
   createUser(data: any) {
-    this.apiService.addUser(data).subscribe(
-      (res) => {
+    this.apiService.addUser(data).subscribe({
+      next: (res) => {
         console.log('job added', res);
+        this.toaster.success('User added successfully')
         this.loadUser();
       },
-      (err) => {
+      error: (err) => {
+        this.toaster.danger('Error while adding user')
         console.log(err);
       }
-    );
+    });
   }
 }

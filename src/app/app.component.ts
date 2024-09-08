@@ -9,11 +9,12 @@ import { LayoutComponent } from './page/layout/layout.component';
 import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { SharedService } from './service/shared.service';
+import { NgToastModule, ToasterPosition } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LayoutComponent, CommonModule],
+  imports: [RouterOutlet, LayoutComponent, CommonModule, NgToastModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit {
   title = 'mmj_market_admin';
   showNav = true;
   currentUrl = '';
+  ToasterPosition = ToasterPosition;
   constructor(private router: Router, private shared: SharedService) {}
   ngOnInit() {
     // this.router.events
