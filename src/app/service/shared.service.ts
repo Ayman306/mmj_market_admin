@@ -11,8 +11,7 @@ export class SharedService {
     sessionStorage.clear();
     this.router.navigateByUrl('/login');
   }
-  jobPostFields = {
-    job_detail: [
+  jobPostFields = [
       {
         label: 'Title',
         type: 'text',
@@ -57,7 +56,7 @@ export class SharedService {
       },
       {
         label: 'Salary',
-        type: 'number',
+        type: 'text',
         place_holder: 'Salary range',
         key: 'salary_range',
       },
@@ -80,8 +79,8 @@ export class SharedService {
         place_holder: 'Expiration date',
         key: 'expiry_date',
       },
-    ],
-    contact_detail: [
+    // ],
+    // contact_detail: [
       {
         label: 'Primary contact',
         type: 'number',
@@ -121,13 +120,12 @@ export class SharedService {
         place_holder: 'Website',
         key: 'web_url',
       },
-    ],
-  };
+
+  ];
 
   businessFields = {};
   categoryFields = {};
-  user = {
-    user_field: [
+  user = [
       {
         label: 'Username',
         type: 'text',
@@ -156,8 +154,7 @@ export class SharedService {
         place_holder: 'Email',
         key: 'email',
       },
-    ],
-  };
+  ];
   setLoginValues(key: string, data: any) {
     localStorage.setItem(key, JSON.stringify(JSON.parse(data)));
   }
