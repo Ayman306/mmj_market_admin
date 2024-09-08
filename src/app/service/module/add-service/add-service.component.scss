@@ -1,3 +1,12 @@
 // .container {
 //   height: 780px;
 // }
+.formcontent{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  @media (max-width:780px) {
+    grid-template-columns:  1fr;
+
+  }
+}

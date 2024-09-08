@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { JsonPipe } from '@angular/common';
+import { NumberRangePipe } from '../../../utils/pipes/number-range.pipe';
 
 @Component({
   selector: 'app-add-service',
@@ -31,6 +32,7 @@ import { JsonPipe } from '@angular/common';
     MatDatepickerModule,
     MatDialogModule,
     JsonPipe,
+    NumberRangePipe
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './add-service.component.html',
@@ -46,7 +48,7 @@ export class AddServiceComponent implements OnInit {
 
   formType: any;
   form!: FormGroup;
-  customformGroupName: string[] = [];
+  readonly = false
 
   ngOnInit(): void {
     console.log(this.data, 'data');
@@ -56,39 +58,14 @@ export class AddServiceComponent implements OnInit {
         this.patchFormValues(this.data.apiResponse);
       }
     }
+    this.readonly = this.data?.readonly
+
   }
 
   patchFormValues(apiResponse: any) {
-    if (!this.form) return;
-
-    this.customformGroupName.forEach((groupName) => {
-      const groupData = apiResponse[groupName];
-      if (groupData) {
-        const formGroup = this.form.get(groupName) as FormGroup;
-        if (formGroup) {
-          Object.keys(groupData).forEach((key) => {
-            if (formGroup.get(key)) {
-              if (key.includes('id')) {
-                // Set true for any key that includes 'id'
-                formGroup.get(key)?.patchValue(true);
-              } else if (
-                key === 'media' &&
-                typeof groupData[key] === 'string'
-              ) {
-                try {
-                  const mediaObj = JSON.parse(groupData[key]);
-                  if (Array.isArray(mediaObj) && mediaObj.length > 0) {
-                    formGroup.get(key)?.patchValue(groupData[key]);
-                  }
-                } catch (e) {
-                  console.error('Error parsing media JSON:', e);
-                }
-              } else {
-                formGroup.get(key)?.patchValue(groupData[key]);
-              }
-            }
-          });
-        }
+    Object.keys(apiResponse).forEach(key => {
+      if (this.form.controls[key]) {
+        this.form.controls[key].setValue(apiResponse[key]);
       }
     });
   }
@@ -97,15 +74,7 @@ export class AddServiceComponent implements OnInit {
     switch (type) {
       case 'job':
         this.formType = this.sharedService.jobPostFields;
-        this.form = this.fb.group({
-          job_detail: this.fb.group(
-            this.createFields(this.formType.job_detail)
-          ),
-          contact_detail: this.fb.group(
-            this.createFields(this.formType.contact_detail)
-          ),
-        });
-        this.customformGroupName = ['job_detail', 'contact_detail'];
+        this.form = this.fb.group(this.createFields(this.formType));
         break;
       case 'business':
         this.formType = this.sharedService.businessFields;
@@ -115,12 +84,7 @@ export class AddServiceComponent implements OnInit {
         break;
       case 'user':
         this.formType = this.sharedService.user;
-        this.form = this.fb.group({
-          user_field: this.fb.group(
-            this.createFields(this.formType.user_field)
-          ),
-        });
-        this.customformGroupName = ['user_field'];
+        this.form = this.fb.group(this.createFields(this.formType));
         break;
       default:
         this.formType = [];
@@ -130,7 +94,7 @@ export class AddServiceComponent implements OnInit {
 
   createFields(fields: any): any {
     const group: { [key: string]: FormControl } = {};
-    fields.forEach((field: any) => {
+    fields?.forEach((field: any) => {
       group[field.key] = new FormControl('');
     });
     return group;
@@ -138,14 +102,22 @@ export class AddServiceComponent implements OnInit {
 
   onSubmit() {
     console.log(this.form.value);
-    this.sendValues();
+    if (this.form.value?.expiry_date.length == 0) {
+      const currentDate = new Date();
+      const expiryDate = new Date(currentDate.setDate(currentDate.getDate() + 15));
+      this.form.patchValue({
+        expiry_date: expiryDate
+      });
+    }
+    if (!this.data.apiResponse) {
+      this.form.value['status'] = true
+      this.form.value['approval_date'] = new Date().toISOString().split('T')[0] // Format as YYYY-MM-DD
+    }
+    this.dialogRef.close(this.form.value);
   }
 
   cancel(): void {
     this.form.reset();
     this.dialogRef.close();
-  }
-  sendValues() {
-    this.dialogRef.close(this.form.value);
   }
 }
