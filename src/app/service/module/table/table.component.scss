@@ -5,3 +5,11 @@
 .status_active {
   color: green;
 }
+
+.card-body {
+  flex: 1 1 auto;
+  padding: var(--bs-card-spacer-y) var(--bs-card-spacer-x);
+  color: var(--bs-card-color);
+  height: calc(100vh - 267px);
+  overflow: scroll;
+}
