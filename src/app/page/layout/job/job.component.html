@@ -1,22 +1,31 @@
 <div class="main">
   <div class="content">
     <div class=" d-flex justify-content-between">
-    <div class="left">
-      <h1>Job</h1>
-    </div>
-    <div class="right">
-      <div class="d-flex gap-2">
-        <button class="btn p-2 addBtn" (click)="openJobDialog()"> <i class="bi bi-envelope-fill"></i> Add Jobs</button>
-        <button class="btn p-2 addBtn"><i class="bi bi-layout-text-window"></i> Export List</button>
-        <button class="btn p-2 addBtn"><i class="bi bi-arrow-clockwise"></i> Refresh records</button>
+      <div class="left">
+        <h1>Job</h1>
       </div>
+      <div class="right">
+        <div class="d-flex gap-2">
+          <button class="btn p-2 addBtn" [ngClass]="{'active': jobApprovalIsActive}" (click)="activeJobApproval(true)"
+            matTooltip="Pending Job Approvals">
+            <i class="bi bi-exclamation-circle p-1"></i>Job post
+            approval!</button>
+          <button class="btn p-2 addBtn" (click)="openJobDialog()" matTooltip="Add New Job Post"> <i
+              class="bi bi-envelope-fill"></i> Add
+            Jobs</button>
+          <!-- <button class="btn p-2 addBtn"><i class="bi bi-layout-text-window"></i> Export List</button> -->
+          <button class="btn p-2 addBtn"><i class="bi bi-arrow-clockwise"
+              (click)="jobApprovalIsActive ? activeJobApproval(true) : loadJobs();" matTooltip="Refresh records"></i></button>
+          
+          </div>
       </div>
     </div>
-    <app-list-filter [filterOption]="foods"></app-list-filter>
+    <app-list-filter (search)="onSearch($event)" (filter)="onSelect($event)"></app-list-filter>
   </div>
 
 
-  <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource" [total]="totalJobs"
-  [pageSize]="pageSize"  (pageChange)="onPageChange($event)" (editRecordData)="editRecord($event)" (statusUpdate)="editStatus($event)"></app-table>
+  <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource" [total]="totalJobs" [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)" (editRecordData)="editRecord($event)" (statusUpdate)="editStatus($event)"
+    (displayService)="displayService($event)"></app-table>
 
 </div>

@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MyErrorStateMatcher } from '../../utils/error-state-mtatcher';
 import { SharedService } from '../../service/shared.service';
 import { ApiService } from '../../service/api.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private router: Router,
     private sharedService: SharedService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private toaster: NgToastService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -48,18 +50,20 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.loginForm.value['platform'] = 'admin';
       if (this.resetPassword) {
-        this.apiService.resetPassword(this.loginForm.value).subscribe(
-          (res) => {
+        this.apiService.resetPassword(this.loginForm.value).subscribe({
+          next: (res) => {
             console.log(res);
             this.resetValue();
+            this.toaster.success('Reset password request successful, check mail ')
           },
-          (err) => {
+          error: (err) => {
+            this.toaster.danger('Error: ' + err.message)
             console.log(err);
           }
-        );
+        });
       } else {
-        this.apiService.loginUser(this.loginForm.value).subscribe(
-          (res) => {
+        this.apiService.loginUser(this.loginForm.value).subscribe({
+          next: (res) => {
             console.log(res);
             if (res?.user?.role == 'admin') {
               this.sharedService.setLoginValues(
@@ -70,13 +74,15 @@ export class LoginComponent {
                 'user',
                 JSON.stringify(res?.user)
               );
+              this.toaster.success('MMJ dashboard is configured!', 'Welcome')
               this.router.navigateByUrl('/admin');
             }
           },
-          (err) => {
+          error: (err) => {
+            this.toaster.danger('Error: ' + err.message)
             console.log(err.message);
           }
-        );
+        });
       }
       // this.sharedService.setLoginValues(this.loginForm.value);
       // Perform login logic here

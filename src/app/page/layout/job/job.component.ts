@@ -7,6 +7,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddServiceComponent } from '../../../service/module/add-service/add-service.component';
 import { ApiService } from '../../../service/api.service';
 import { PageEvent } from '@angular/material/paginator';
+import { NgToastService } from 'ng-angular-popup';
+import { NgClass } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-job',
@@ -17,12 +20,15 @@ import { PageEvent } from '@angular/material/paginator';
     TableComponent,
     ListFilterComponent,
     MatDialogModule,
+    NgClass,
+    MatTooltipModule
   ],
   templateUrl: './job.component.html',
   styleUrl: './job.component.scss',
 })
 export class JobComponent implements OnInit {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private toaster: NgToastService) { }
+
   ngOnInit(): void {
     this.loadJobs();
   }
@@ -31,41 +37,76 @@ export class JobComponent implements OnInit {
   pageSize = 10;
   currentPage = 0;
 
-  currentRoute = 'Jobs';
+  jobApprovalIsActive = false
+
   displayedColumns: string[] = [
     'Job Title',
     'Company',
     'Phone',
-    'Expires on',
+    'Created date',
     'Action',
   ];
   dataSource: any;
-  total = 20;
   dialog = inject(MatDialog);
 
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
+  options = [
+    { label: 'Anytime', value: 'anytime' },
+    { label: 'Past 24 hours', value: '24 hours' },
+    { label: 'Past weeek', value: 'week' },
+    { label: 'Past month', value: 'month' },
   ];
 
-  loadJobs() {
+  filterOption = {
+    search: '',
+    filter: ''
+  }
+  sortJobBy: string = '';
+  onSelect(option: any) {
+    this.sortJobBy = option.value;
+    this.filterOption.filter = option.value;
+    this.loadJobs(this.filterOption)
+    console.log('Selected value:', this.sortJobBy);
+  }
+
+  onSearch(searchText: any) {
+    this.totalJobs = 0;
+    this.pageSize = 10;
+    this.currentPage = 0;
+
+    // Emit the search text to the subject
+    console.log('Searched text:', searchText);
+    this.filterOption.search = searchText;
+    this.loadJobs(this.filterOption, false)
+  }
+
+  loadJobs(data?: any, showToaster: boolean = false) {
     const body = {
       page: this.currentPage + 1, // Adding 1 because backend might expect 1-based indexing
       itemsPerPage: this.pageSize,
       offset: this.currentPage * this.pageSize,
       platform: 'admin',
+      ...data
     };
-    this.apiService.getAllJobList(body).subscribe((res) => {
-      this.dataSource = res?.result?.map((job: any) => ({
-        id: job?.jobpost.job_detail.id,
-        title: job?.jobpost.job_detail.title,
-        company: job?.jobpost.job_detail.company_name,
-        phone: job?.jobpost.contact_detail.primary_contact,
-        expiry_date: this.formatDate(job?.jobpost.job_detail.created_date),
-        status: job?.jobpost.job_detail.status,
-      }));
-      this.totalJobs = res.total;
+    this.apiService.getAllJobList(body).subscribe({
+      next: (res) => {
+        this.dataSource = res?.result?.map((job: any) => ({
+          id: job?.jobid,
+          title: job?.title,
+          company: job?.company_name,
+          phone: job?.primary_contact,
+          created_date: this.formatDate(job?.created_date),
+          status: job?.status,
+        }
+        )
+        );
+        this.totalJobs = res.result[0]?.totalcount || 0;
+        if (showToaster) {
+          this.toaster.success('Latest job lists...', 'Job posts')
+        }
+      },
+      error: (err) => {
+        this.toaster.success(err, 'Error')
+      }
     });
   }
 
@@ -84,45 +125,50 @@ export class JobComponent implements OnInit {
     this.apiService.getAllJobList(data).subscribe((apiResponseData) => {
       console.log(apiResponseData);
       const dialogRef = this.dialog.open(AddServiceComponent, {
+        disableClose: true,
         data: {
           title: 'job',
-          apiResponse: apiResponseData[0].jobpost, // The object you received from the API
+          apiResponse: apiResponseData[0], // The object you received from the API
+          readonly: data?.readonly || false
         },
       });
       dialogRef.afterClosed().subscribe((result: any) => {
         if (result) {
           // Handle the result from the dialog
           console.log('Edited job:', result);
-          // Optionally, refresh the job list
-          if (result?.contact_detail?.primary_contact) {
-            result.contact_detail.contact_available = true;
-          } else {
-            result.contact_detail.contact_available = false;
-          }
-          result.job_detail['id'] = apiResponseData[0].jobpost.job_detail.id;
-          result.contact_detail['id'] =
-            apiResponseData[0].jobpost.contact_detail.id;
-          // this.editJob(result);
+          result.id = apiResponseData[0].jobid;
+          this.editJob(result);
         }
       });
     });
     console.log(data);
   }
+
+
   editStatus(item: any) {
     console.log(item);
-    let data = {
-      job_detail: {
-        id: item.id,
-        status: item.status,
-      },
+    let data
+    data = {
+      id: item.id,
+      status: item.status,
+      updateType: 'status_update'
     };
-    if (data) {
-      this.editJob(data);
+    if (item.status) {
+      data = {
+        ...data,
+        approval_date: new Date().toISOString().split('T')[0] // Format as YYYY-MM-DD
+      };
     }
+    this.editJob(data);
+  }
+
+  displayService(item: any) {
+    this.editRecord(item);
   }
 
   openJobDialog() {
     const dialogRef = this.dialog.open(AddServiceComponent, {
+      disableClose: true,
       data: {
         title: 'job',
       },
@@ -133,35 +179,91 @@ export class JobComponent implements OnInit {
       if (result) {
         // Handle the result from the dialog
         console.log('New job added:', result);
-        // Optionally, refresh the job list
-        if (result?.contact_detail?.primary_contact) {
-          result.contact_detail.contact_available = true;
-        }
         this.addJob(result);
       }
     });
   }
 
   addJob(data: any) {
-    this.apiService.addJob(data).subscribe(
-      (res) => {
+    this.apiService.addJob(data).subscribe({
+      next: (res) => {
         console.log('job added');
+        this.toaster.success('Job added')
         this.loadJobs();
       },
-      (err) => {
+      error: (err) => {
+        this.toaster.danger('Internal Server Error' + err);
         console.log(err);
       }
-    );
+    });
   }
+
+  activeJobApproval(showToaster = false) {
+    this.jobApprovalIsActive = !this.jobApprovalIsActive;
+    if (this.jobApprovalIsActive) {
+      this.resetValues()
+
+      const body = {
+        page: this.currentPage + 1, // Adding 1 because backend might expect 1-based indexing
+        itemsPerPage: this.pageSize,
+        offset: this.currentPage * this.pageSize,
+        platform: 'admin',
+      };
+      this.apiService.getAllJobApprovalList(body).subscribe({
+        next: (res) => {
+          this.dataSource = res?.result?.map((job: any) => ({
+            id: job?.jobid,
+            title: job?.title,
+            company: job?.company_name,
+            phone: job?.primary_contact,
+            created_date: this.formatDate(job?.created_date),
+            status: job?.status,
+          }
+          )
+          );
+          this.totalJobs = res.result[0].totalcount;
+          if (showToaster) {
+            this.toaster.success('Switched to job approval lists...', 'Job approval lists')
+          }
+        },
+        error: (err) => {
+          this.toaster.success(err, 'Error')
+        }
+      });
+    } else {
+      this.loadJobs()
+    }
+  }
+
+
   editJob(data: any) {
-    this.apiService.editJob(data).subscribe(
-      (res) => {
+    this.apiService.editJob(data).subscribe({
+      next: (res: any) => {
         console.log('job edited');
-        this.loadJobs();
+        this.toaster.success('job status updated')
+        if (this.jobApprovalIsActive) {
+          this.activeJobApproval(true)
+        } else {
+          this.loadJobs();
+        }
       },
-      (err) => {
+      error: (err) => {
+        this.toaster.danger('Error while editing job', err)
         console.log(err);
       }
-    );
+    });
+  }
+
+  resetValues() {
+    this.totalJobs = 0;
+    this.pageSize = 10;
+    this.currentPage = 0;
+    this.dataSource = {}
+    this.filterOption = {
+      search: '',
+      filter: ''
+    }
+    this.sortJobBy = '';
+
   }
 }

@@ -33,6 +33,11 @@ export class ApiService {
   getAllJobList(data: any) {
     return this.http.post<any>(`${this.apiUrl}/job`, data);
   }
+
+  getAllJobApprovalList(data: any) {
+    return this.http.post<any>(`${this.apiUrl}/job/approval`, data);
+  }
+
   addJob(data: any) {
     return this.http.post<any>(`${this.apiUrl}/job/add`, data);
   }

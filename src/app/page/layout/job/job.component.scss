@@ -19,5 +19,9 @@
         color: $primary-white;
       }
     }
+    .addBtn.active{
+      background-color: $primary-green;
+        color: $primary-white;
+    }
   }
 }
