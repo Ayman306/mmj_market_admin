@@ -94,7 +94,7 @@ export class JobComponent implements OnInit {
           title: job?.title,
           company: job?.company_name,
           phone: job?.primary_contact,
-          created_date: this.formatDate(job?.created_date),
+          created_date: this.formatDate(job?.updated_date),
           status: job?.status,
         }
         )
