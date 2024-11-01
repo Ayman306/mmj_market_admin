@@ -44,4 +44,12 @@ export class ApiService {
   editJob(data: any) {
     return this.http.post<any>(`${this.apiUrl}/job/update`, data);
   }
+
+
+
+  // ----------------------------------------------------------------
+
+  getCategories(data?: any) {
+    return this.http.post<any>(`${this.apiUrl}/category`, data);
+  }
 }

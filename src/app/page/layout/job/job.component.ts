@@ -46,7 +46,7 @@ export class JobComponent implements OnInit {
     'Created date',
     'Action',
   ];
-  dataSource: any;
+  dataSource: any = [];
   dialog = inject(MatDialog);
 
   options = [

@@ -11,6 +11,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -95,7 +96,9 @@ export class AddServiceComponent implements OnInit {
   createFields(fields: any): any {
     const group: { [key: string]: FormControl } = {};
     fields?.forEach((field: any) => {
-      group[field.key] = new FormControl('');
+      const validators = field?.required ? [Validators.required] : [];
+      const controlConfig = this.data?.readonly ? { value: '', disabled: true } : { value: '', disabled: false };
+      group[field.key] = new FormControl(controlConfig, validators);
     });
     return group;
   }

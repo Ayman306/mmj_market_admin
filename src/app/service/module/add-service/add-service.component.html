@@ -14,22 +14,22 @@
         <mat-form-field class="example-full-width m-2">
           <mat-label>{{ field.label }}</mat-label>
           <input matInput [type]="field.type" [placeholder]="field.place_holder" [formControlName]="field.key"
-            [readonly]="readonly" />
+             />
           </mat-form-field>
           }
           @if (field.key == 'salary_range') {
           <mat-form-field class="example-full-width m-2">
             <mat-label>{{ field.label }}</mat-label>
             <input matInput type=text [placeholder]="field.place_holder" [formControlName]="field.key" numberRange
-              [readonly]="readonly" />
+               />
         </mat-form-field>
         }
         @if (field.type == 'dropdown') {
         <mat-form-field class="example-full-width m-2">
           <mat-label>{{ field.label }}</mat-label>
-          <mat-select [formControlName]="field.key" [disabled]="readonly">
+          <mat-select [formControlName]="field.key">
             @for (option of field.options; track $index) {
-            <mat-option [value]="option.value" [disabled]="readonly">
+            <mat-option [value]="option.value">
               {{ option.label }}
             </mat-option>
             }
@@ -39,9 +39,9 @@
         @if (field.type == 'date') {
         <mat-form-field class="example-full-width m-2">
           <mat-label>{{ field.label }}</mat-label>
-          <input matInput [matDatepicker]="picker" [formControlName]="field.key" [readonly]="readonly">
+          <input matInput [matDatepicker]="picker" [formControlName]="field.key">
           <mat-hint>MM/DD/YYYY</mat-hint>
-          <mat-datepicker-toggle matIconSuffix [for]="picker" [disabled]="readonly"></mat-datepicker-toggle>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         }
